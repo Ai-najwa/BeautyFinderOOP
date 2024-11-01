@@ -1,0 +1,136 @@
+<<!<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+
+    <!-- CSS link -->
+    <link rel="stylesheet" href="css/gallery.css">
+</head>
+<body>
+    
+   <!-- Header -->
+   <header>
+    <a href="#" class="brand">Beauty Finder</a>
+    <div class="menu">
+        <div class="btn">
+            <i class="fas fa-times close-btn"></i>
+        </div>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="wishlist.html">Wishlist</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </div>
+    <div class="btn">
+        <i class="fas fa-bars menu-btn"></i>
+    </div>
+</header>
+
+    <!-- Container -->
+    <div class="container">
+        <div class="cover">
+            <h1>Your Cart</h1>
+        </div>
+        <div class="text">
+            <h3>Your Selected Products</h3>
+            <p>These are the products you've added to your cart. You can view details or remove items as needed!</p>
+        </div>
+
+        <div id="cartItems"></div> <!-- This is the correct ID for displaying cart items -->
+    
+        <a class="back-button" href="index.html">Back to Products</a>
+
+    <script src="beautyfinder.js"></script>
+    <script>
+        // Function to load cart items from local storage
+        function loadCart() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            cartItemsContainer.innerHTML = ""; // Clear previous items
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
+                return;
+            }
+
+            cart.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('cart-item');
+                itemDiv.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}">
+                    <div class="item-details">
+                        <h4>${item.title}</h4>
+                        <p><strong>Brand:</strong> ${item.brand || 'N/A'}</p>
+                        <p><strong>Price:</strong> $${item.price}</p>
+                        <p><strong>Rating:</strong> ${item.rating || 'N/A'}</p>
+                        <p><strong>Type:</strong> ${item.productType || 'N/A'}</p>
+                        <p><strong>Quantity:</strong> 
+                            <input type="number" value="${item.quantity}" min="1" id="quantity-${item.title.replace(/\s+/g, '-')}">
+                        </p>
+                        <button onclick="enableQuantity('${item.title}')">Update</button>
+                        <button onclick="removeFromCart('${item.title}')">Remove</button>
+                        <p id="updated-quantity-${item.title.replace(/\s+/g, '-')}"></p> <!-- Placeholder for updated quantity message -->
+                    </div>
+                `;
+                cartItemsContainer.appendChild(itemDiv);
+            });
+        }
+
+        // Function to enable the quantity input field for editing
+        function enableQuantity(title) {
+            const quantityInput = document.getElementById(`quantity-${title.replace(/\s+/g, '-')}`);
+            const updateButton = event.target; // Get the button that was clicked
+
+            // Check if the quantity input is already enabled
+            if (quantityInput.disabled) {
+                quantityInput.disabled = false; // Enable input for editing
+                updateButton.innerText = 'Save'; // Change button text to "Save"
+            } else {
+                const newQuantity = quantityInput.value; // Get the new quantity value
+                updateCartQuantity(title, newQuantity); // Call function to update quantity
+                quantityInput.disabled = true; // Disable input again
+                updateButton.innerText = 'Update'; // Change button text back to "Update"
+            }
+        }
+
+        // Function to remove item from cart
+        function removeFromCart(title) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart = cart.filter(item => item.title !== title);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            loadCart(); // Refresh cart display without reloading the page
+        }
+
+        // Function to update item quantity in cart
+        function updateCartQuantity(title, newQuantity) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart = cart.map(item => {
+                if (item.title === title) {
+                    item.quantity = newQuantity; // Update quantity for the specified item
+                    // Display updated quantity message
+                    document.getElementById(`updated-quantity-${title.replace(/\s+/g, '-')}).innerText = Quantity updated to: ${newQuantity}`);
+                }
+                return item; // Return updated or original item
+            });
+            localStorage.setItem('cart', JSON.stringify(cart)); // Save updated cart to local storage
+            loadCart(); // Refresh the cart display to reflect changes
+        }
+
+        // Load cart items on page load
+        window.onload = loadCart;
+    </script>
+
+    <br><br><br>
+        <!-- Footer -->
+        <footer style="background-color: black; color: white; text-align: center; padding: 20px 0; height: 60px;">
+            <p style="margin: 0;">&copy; 2024 Beauty Finder. All rights reserved.</p>
+        </footer>
+
+    </div>
+    <script src="js/function.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist</title>
+
+    <!-- CSS link -->
+    <link rel="stylesheet" href="css/gallery.css">
+</head>
+<body>
+    
+    <!-- Header -->
+    <header>
+        <a href="#" class="brand">Beauty Finder</a>
+        <div class="menu">
+            <div class="btn">
+                <i class="fas fa-times close-btn"></i>
+            </div>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="wishlist.html">Wishlist</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </div>
+        <div class="btn">
+            <i class="fas fa-bars menu-btn"></i>
+        </div>
+    </header>
+
+    <!-- Container -->
+    <div class="container">
+        <div class="cover">
+            <h1>Wishlist</h1>
+        </div>
+        <div class="text">
+            <h3>Your Favorite Products</h3>
+            <p>Here are the products you've added to your wishlist. You can view more details, update the quantity, or remove items as needed!</p>
+        </div>
+
+        <h1>Your Wishlist</h1>
+        <div id="wishlistItems"></div> <!-- Correct ID for displaying wishlist items -->
+    
+        <a href="index.html">Back to Products</a>
+    
+        <script src="beautyfinder.js"></script>
+        <script>
+            // Function to load wishlist items from local storage
+            function loadWishlist() {
+                const wishlistItemsContainer = document.getElementById('wishlistItems');
+                const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+                wishlistItemsContainer.innerHTML = ''; // Clear previous content
+
+                if (wishlist.length === 0) {
+                    wishlistItemsContainer.innerHTML = "<p>Your wishlist is empty.</p>";
+                    return;
+                }
+
+                wishlist.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.classList.add('wishlist-item');
+                    itemDiv.innerHTML = `
+                        <img src="${item.image}" alt="${item.title}">
+                        <h4>${item.title}</h4>
+                        <p>Brand: ${item.brand || 'N/A'}</p>
+                        <p>Price: $${item.price}</p>
+                        <p>Rating: ${item.rating || 'N/A'}</p>
+                        <p>Type: ${item.productType || 'N/A'}</p>
+                        <input type="number" id="quantity-${item.title.replace(/\s+/g, '-').toLowerCase()}" value="${item.quantity || 1}" min="1">
+                        <button onclick="updateWishlist('${item.title}', document.getElementById('quantity-${item.title.replace(/\s+/g, '-').toLowerCase()}').value)">Update</button>
+                        <button onclick="removeFromWishlist('${item.title}')">Remove</button>
+                    `;
+                    wishlistItemsContainer.appendChild(itemDiv);
+                });
+            }
+
+            // Function to update item quantity in wishlist
+            function updateWishlist(title, newQuantity) {
+                let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+                wishlist = wishlist.map(item => {
+                    if (item.title === title) {
+                        item.quantity = newQuantity; // Update quantity
+                    }
+                    return item;
+                });
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                loadWishlist(); // Refresh wishlist display without reloading
+            }
+
+            // Function to remove item from wishlist
+            function removeFromWishlist(title) {
+                let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+                wishlist = wishlist.filter(item => item.title !== title);
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                loadWishlist(); // Refresh wishlist display without reloading
+            }
+
+            // Load wishlist items on page load
+            window.onload = loadWishlist;
+        </script>
+        <br><br><br><br><br><br>
+
+        <div class="img">
+            <!-- Static images remain as placeholders -->
+            <img src="img/makeup1.jpg" alt="Product 1">
+            <img src="img/work-2.jpg" alt="Product 2">
+            <img src="img/makeup2.jpg" alt="Product 3">
+            <img src="img/work-4.jpg" alt="Product 4">
+            <img src="img/work-6.jpg" alt="Product 5">
+            <img src="img/makeup3.png" alt="Product 6">
+            <img src="img/work-7.jpg" alt="Product 7">
+            <img src="img/makeup4" alt="Product 8"> 
+        </div> <br>
+
+        <!-- Footer -->
+        <footer style="background-color: black; color: white; text-align: center; padding: 20px 0; height: 60px;">
+            <p style="margin: 0;">&copy; 2024 Beauty Finder. All rights reserved.</p>
+        </footer>
+
+    </div>
+    <script src="js/function.js"></script>
+</body>
+</html>

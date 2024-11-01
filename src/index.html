@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beauty Finder</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+     <!-- Header -->
+     <header>
+        <a href="#" class="brand">Beauty Finder</a>
+        <div class="menu">
+            <div class="btn">
+                <i class="fas fa-times close-btn"></i>
+            </div>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="wishlist.html">Wishlist</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </div>
+        <div class="btn">
+            <i class="fas fa-bars menu-btn"></i>
+        </div>
+    </header>
+
+    <!-- Container -->
+    <div class="container">
+        <div class="txt">
+            <h3>BRAND</h3>
+            <h1>Makeup Recommendations</h1>
+
+            <!-- Search Section -->
+            <div class="search-section" id="search">
+                <h2>Find Makeup Products</h2>
+                <input type="text" id="brandInput" placeholder="Brand (e.g., Maybelline)" autocomplete="off">
+                <select id="priceRangeInput">
+                    <option value="">All Price Ranges</option>
+                    <option value="0-5">Under $5</option>
+                    <option value="5-10">$5 - $10</option>
+                    <option value="10-15">$10 - $15</option>
+                    <option value="15-20">$15 - $20</option>
+                </select>
+                <button onclick="buttonClicked()">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <div class="about">
+        <div class="text-sec">
+            <h3>About Us</h3>
+            <h1>Discover Your Perfect Look</h1>
+            <p>Welcome to Beauty Finder, your go-to source for finding makeup products that suit your unique style. Whether you're looking for a subtle look or something bold, we have recommendations for every occasion.</p>
+        </div>
+    </div>
+
+    <!-- Product Display Section -->
+    <div class="products-container" id="productsDisplay">
+        <!-- Product cards will be dynamically inserted here -->
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 Beauty Finder. All rights reserved.</p>
+    </div>
+
+    <script src="beautyfinder.js"></script>
+    <script src="js/function.js"></script>
+</body>
+</html>
+
